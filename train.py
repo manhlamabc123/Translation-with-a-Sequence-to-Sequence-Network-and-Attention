@@ -1,7 +1,11 @@
-from language import Language
-from constants import MAX_LENGTH, EOS_token, SOS_token, device, TEACHER_FORCING_RATIO
+from constants import MAX_LENGTH, EOS_token, SOS_token, device, TEACHER_FORCING_RATIO, LEARNING_RATE
 import torch
 import random
+import time
+from torch import optim
+import torch.nn as nn
+from time_helper import time_since
+from plot import show_plot
 
 def indexes_from_sentence(language, sentence):
     return [language.word2index[word] for word in sentence.split(' ')]
@@ -61,3 +65,34 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
 
     return loss.item() / target_length
     
+def train_iters(encoder, decoder, n_iters, print_every=1000, plot_every=100, learning_rate=LEARNING_RATE):
+    start = time.time()
+    plot_losses = []
+    print_loss_total = 0
+    plot_loss_total = 0
+
+    encoder_optimizer = optim.SGD(encoder.parameters(), lr=learning_rate)
+    decoder_optimizer = optim.SGD(decoder.parameters(), lr=learning_rate)
+    training_pairs = [tensors_from_pair(random.choice(pairs)) for i in range(n_iters)]
+    criterion = nn.NLLoss()
+
+    for iter in range(1, n_iters + 1):
+        training_pair = training_pairs[iter - 1]
+        input_tensor = training_pair[0]
+        target_tensor = training_pair[1]
+
+        loss = train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, decoder_optimizer, criterion)
+        print_loss_total += loss
+        plot_loss_total += loss
+
+        if iter % print_every == 0:
+            print_loss_avg = print_loss_total / print_every
+            print_loss_total = 0
+            print('%s (%d %d%%) %.4f' % (time_since(start, iter/n_iters), iter, iter/n_iters * 100, print_loss_avg))
+
+        if iter % plot_every == 0:
+            plot_loss_avg = plot_loss_total / plot_every
+            plot_losses.append(plot_loss_avg)
+            plot_loss_total = 0
+
+    show_plot(plot_losses)
