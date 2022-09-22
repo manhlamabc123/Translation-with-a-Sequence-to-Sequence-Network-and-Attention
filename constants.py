@@ -6,3 +6,5 @@ MAX_LENGTH = 10
 
 SOS_token = 0
 EOS_token = 1
+
+TEACHER_FORCING_RATIO = 0.5
