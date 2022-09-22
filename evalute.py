@@ -37,7 +37,7 @@ def evaluate(input_language, output_language, encoder, decoder, sentence, max_le
 
         return decoded_words, decoder_attentions[:di + 1]
 
-def evaluateRandomly(pairs, encoder, decoder, n=10):
+def evaluate_randomly(pairs, encoder, decoder, n=10):
     for i in range(n):
         pair = random.choice(pairs)
         print('>', pair[0])

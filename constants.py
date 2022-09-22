@@ -1,3 +1,4 @@
+from tkinter import HIDDEN
 import torch
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -10,3 +11,5 @@ EOS_token = 1
 TEACHER_FORCING_RATIO = 0.5
 
 LEARNING_RATE = 0.01
+
+HIDDEN_SIZE = 256
