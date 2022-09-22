@@ -15,7 +15,7 @@ class AttentionDecoderRNN(nn.Module):
         self.attention = nn.Linear(self.hidden_size * 2, self.max_length)
         self.attention_combine = nn.Linear(self.hidden_size * 2, self.hidden_size)
         self.dropout = nn.Dropout(self.dropout_probability)
-        self.gru = nn.Gru(self.hidden_size, self.hidden_size)
+        self.gru = nn.GRU(self.hidden_size, self.hidden_size)
         self.out = nn.Linear(self.hidden_size, self.output_size)
 
     def forward(self, input, hidden, encoder_output):

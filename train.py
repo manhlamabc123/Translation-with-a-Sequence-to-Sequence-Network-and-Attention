@@ -65,7 +65,7 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
 
     return loss.item() / target_length
     
-def train_iters(encoder, decoder, n_iters, print_every=1000, plot_every=100, learning_rate=LEARNING_RATE):
+def train_iters(input_language, output_language, pairs, encoder, decoder, n_iters, print_every=1000, plot_every=100, learning_rate=LEARNING_RATE):
     start = time.time()
     plot_losses = []
     print_loss_total = 0
@@ -73,8 +73,8 @@ def train_iters(encoder, decoder, n_iters, print_every=1000, plot_every=100, lea
 
     encoder_optimizer = optim.SGD(encoder.parameters(), lr=learning_rate)
     decoder_optimizer = optim.SGD(decoder.parameters(), lr=learning_rate)
-    training_pairs = [tensors_from_pair(random.choice(pairs)) for i in range(n_iters)]
-    criterion = nn.NLLoss()
+    training_pairs = [tensors_from_pair(random.choice(pairs), input_language, output_language) for i in range(n_iters)]
+    criterion = nn.NLLLoss()
 
     for iter in range(1, n_iters + 1):
         training_pair = training_pairs[iter - 1]
