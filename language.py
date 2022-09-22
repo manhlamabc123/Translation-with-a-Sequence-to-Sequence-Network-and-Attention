@@ -1,7 +1,7 @@
 SOS_token = 0
 EOS_token = 1
 
-class Lang:
+class Language:
     def __init__(self, name):
         self.name = name
         self.word2index = {}
