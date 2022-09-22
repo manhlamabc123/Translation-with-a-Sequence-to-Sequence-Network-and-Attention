@@ -3,8 +3,6 @@ from io import open
 import string
 import random
 
-import torch
-import torch.nn as nn
 from torch import optim
 import torch.nn.functional as F
 from preprocessing import *
