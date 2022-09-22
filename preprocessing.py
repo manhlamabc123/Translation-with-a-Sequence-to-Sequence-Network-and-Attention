@@ -51,3 +51,17 @@ def filter_pair(pair):
 
 def filter_pairs(pairs):
     return [pair for pair in pairs if filter_pair(pair)]
+
+def prepare_data(language1, language2, reverse=False):
+    input_language, output_language, pairs = read_languages(language1, language2, reverse)
+    print("Read %s sentence pairs" % len(pairs))
+    pairs = filter_pairs(pairs)
+    print("Trimmed to %s sentence pairs" % len(pairs))
+    print("Counting words...")
+    for pair in pairs:
+        input_language.add_sentence(pair[0])
+        output_language.add_sentence(pair[1])
+    print("Counted words:")
+    print(input_language.name, input_language.n_words)
+    print(output_language.name, output_language.n_words)
+    return input_language, output_language, pairs
