@@ -1,8 +1,7 @@
 import unicodedata
 import re
 from language import Language
-
-MAX_LENGTH = 10
+from constants import MAX_LENGTH
 
 english_prefixes = (
     "i am ", "i m ",

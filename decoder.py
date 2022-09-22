@@ -1,8 +1,7 @@
 import torch.nn as nn
 import torch.nn.functional as F
 import torch
-
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+from constant import device
 
 class DecoderRNN(nn.Module):
     def __init__(self, hidden_size, output_size):

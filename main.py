@@ -5,8 +5,7 @@ import random
 
 from torch import optim
 from preprocessing import *
-
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+from constants import device
 
 #Preprocessing Data
 input_language, output_language, pairs = prepare_data('eng', 'fra', True)

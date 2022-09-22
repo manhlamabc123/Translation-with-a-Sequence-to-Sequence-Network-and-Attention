@@ -1,7 +1,6 @@
 import torch.nn as nn
 import torch
-
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+from constants import device
 
 class EncoderRNN(nn.Module):
     def __init__(self, input_size, hidden_size):
