@@ -4,7 +4,6 @@ import string
 import random
 
 from torch import optim
-import torch.nn.functional as F
 from preprocessing import *
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
