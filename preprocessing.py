@@ -2,6 +2,17 @@ import unicodedata
 import re
 from language import Language
 
+MAX_LENGTH = 10
+
+english_prefixes = (
+    "i am ", "i m ",
+    "he is", "he s ",
+    "she is", "she s ",
+    "you are", "you re ",
+    "we are", "we re ",
+    "they are", "they re "
+)
+
 # Lowercase, trim, and remove non-letter characters
 def unicode_to_ascii(string):
     return ''.join(
@@ -34,3 +45,9 @@ def read_languages(language1, language2, reverse = False):
         output_language = Language(language2)
 
     return input_language, output_language, pairs
+
+def filter_pair(pair):
+    return len(pair[0].split(' ')) < MAX_LENGTH and len(pair[1].split(' ')) < MAX_LENGTH and pair[1].startswith(english_prefixes)
+
+def filter_pairs(pairs):
+    return [pair for pair in pairs if filter_pair(pair)]
