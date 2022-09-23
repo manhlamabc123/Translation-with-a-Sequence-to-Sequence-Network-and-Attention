@@ -18,3 +18,12 @@ PRINT_EVERY = 5000
 N_ITERS = 1
 
 DROPOUT_PROBABILITY = 0.1
+
+ENGLISH_PREFIXES = (
+    "i am ", "i m ",
+    "he is", "he s ",
+    "she is", "she s ",
+    "you are", "you re ",
+    "we are", "we re ",
+    "they are", "they re "
+)
