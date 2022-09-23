@@ -1,7 +1,7 @@
 import torch.nn as nn
 import torch.nn.functional as F
 import torch
-from constant import device
+from constants import device
 
 class DecoderRNN(nn.Module):
     def __init__(self, hidden_size, output_size):
