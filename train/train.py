@@ -4,8 +4,8 @@ import random
 import time
 from torch import optim
 import torch.nn as nn
-from time_helper import time_since
-from plot import show_plot
+from helper.time_helper import time_since
+from helper.plot import show_plot
 
 def indexes_from_sentence(language, sentence):
     return [language.word2index[word] for word in sentence.split(' ')]

@@ -1,6 +1,6 @@
 from constants import MAX_LENGTH
 import torch
-from train import *
+from train.train import *
 
 def evaluate(input_language, output_language, encoder, decoder, sentence, max_length=MAX_LENGTH):
     with torch.no_grad():

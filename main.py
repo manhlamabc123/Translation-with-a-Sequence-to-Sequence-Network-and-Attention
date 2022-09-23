@@ -1,11 +1,11 @@
 from __future__ import unicode_literals, print_function, division
-from evalute import evaluate_randomly
+from evalute.evalute import evaluate_randomly
 
-from preprocessing import prepare_data
-from encoder import EncoderRNN
+from preprocessing.preprocessing import prepare_data
+from model.encoder import EncoderRNN
 from constants import HIDDEN_SIZE, device
-from attention_decoder import AttentionDecoderRNN
-from train import train_iters
+from model.attention_decoder import AttentionDecoderRNN
+from train.train import train_iters
 
 # Preprocessing Data
 input_language, output_language, pairs = prepare_data('eng', 'fra', True)
