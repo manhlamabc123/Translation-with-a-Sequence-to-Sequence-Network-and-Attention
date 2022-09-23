@@ -1,6 +1,6 @@
 import unicodedata
 import re
-from language import Language
+from preprocessing.language import Language
 from constants import MAX_LENGTH
 
 english_prefixes = (
