@@ -19,7 +19,8 @@
 
 ## Architecture
 
-* Encoder: ![Alt text](images/encoder-network.png "Title")
+* Encoder:
+![Alt text](images/encoder-network.png "Title")
 * Decoder:
 
 ## Technologies
