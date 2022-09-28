@@ -20,6 +20,7 @@
 ## Architecture
 
 * Encoder:
+
 ![Alt text](images/encoder-network.png "Title")
 * Decoder:
 
