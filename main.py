@@ -10,10 +10,12 @@ from train.train import train_iters
 # Preprocessing Data
 input_language, output_language, pairs = prepare_data('eng', 'fra', True)
 
-# Training and Evaluating
+# Call Encoder and Decoder
 encoder1 = EncoderRNN(input_language.n_words, HIDDEN_SIZE).to(device)
 attention_decoder1 = AttentionDecoderRNN(HIDDEN_SIZE, output_language.n_words, dropout_probability=DROPOUT_PROBABILITY).to(device)
 
+# Train Model
 train_iters(input_language, output_language, pairs, encoder1, attention_decoder1, N_ITERS, print_every=PRINT_EVERY)
 
+# Evaluate Model
 evaluate_randomly(input_language, output_language, pairs, encoder1, attention_decoder1)

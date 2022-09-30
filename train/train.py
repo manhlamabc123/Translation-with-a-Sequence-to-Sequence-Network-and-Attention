@@ -21,60 +21,66 @@ def tensors_from_pair(pair, input_language, output_language):
     return (input_tensor, target_tensor)
 
 def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, decoder_optimizer, criterion, max_length=MAX_LENGTH):
+    # Initialize Encoder's hidden state & Encoder's Output & loss
     encoder_hidden = encoder.init_hidden()
+    encoder_outputs = torch.zeros(max_length, encoder.hidden_size, device=device)
+    loss = 0
 
-    encoder_optimizer.zero_grad()
-    decoder_optimizer.zero_grad()
-
+    # Get Input's length & Target's length
     input_length = input_tensor.size(0)
     target_length = target_tensor.size(0)
 
-    encoder_outputs = torch.zeros(max_length, encoder.hidden_size, device=device)
-
-    loss = 0
-
+    # Forward pass
     for ei in range(input_length):
         encoder_output, encoder_hidden = encoder(input_tensor[ei], encoder_hidden)
         encoder_outputs[ei] = encoder_output[0, 0]
 
+    # Initialize Decoder's Input and Hidden State
     decoder_input = torch.tensor([[SOS_token]], device=device)
-
     decoder_hidden = encoder_hidden
 
+    # Use Teacher Forcing Algorithm
     use_teacher_forcing = True if random.random() < TEACHER_FORCING_RATIO else False
-
     if use_teacher_forcing:
+        # Use word in target string as an input
         for di in range(target_length):
             decoder_output, decoder_hidden, decoder_attention = decoder(decoder_input, decoder_hidden, encoder_outputs)
             loss += criterion(decoder_output, target_tensor[di])
             decoder_input = target_tensor[di]
     else:
+        # Use word max posibility as an input
         for di in range(target_length):
             decoder_output, decoder_hidden, decoder_attention = decoder(decoder_input, decoder_hidden, encoder_outputs)
             topv, topi = decoder_output.topk(1)
-            decoder_input = topi.squeeze().detach()
+            decoder_input = topi.squeeze().detach() # Detach to create a new tensor that never require gradient
 
             loss += criterion(decoder_output, target_tensor[di])
             if decoder_input.item() == EOS_token:
                 break
 
+    # Backward pass
     loss.backward()
 
+    # Update parameters
     encoder_optimizer.step()
     decoder_optimizer.step()
+
+    # Clean gradients
+    encoder_optimizer.zero_grad()
+    decoder_optimizer.zero_grad()
 
     return loss.item() / target_length
     
 def train_iters(input_language, output_language, pairs, encoder, decoder, n_iters, print_every=1000, plot_every=100, learning_rate=LEARNING_RATE):
-    start = time.time()
+    start = time.time() # Start time counter
     plot_losses = []
     print_loss_total = 0
     plot_loss_total = 0
 
-    encoder_optimizer = optim.SGD(encoder.parameters(), lr=learning_rate)
-    decoder_optimizer = optim.SGD(decoder.parameters(), lr=learning_rate)
+    encoder_optimizer = optim.SGD(encoder.parameters(), lr=learning_rate) # stochastic gradient descent
+    decoder_optimizer = optim.SGD(decoder.parameters(), lr=learning_rate) #stochastic gradient descent
     training_pairs = [tensors_from_pair(random.choice(pairs), input_language, output_language) for i in range(n_iters)]
-    criterion = nn.NLLLoss()
+    criterion = nn.NLLLoss() # The negative log likelihood loss
 
     for iter in range(1, n_iters + 1):
         training_pair = training_pairs[iter - 1]
